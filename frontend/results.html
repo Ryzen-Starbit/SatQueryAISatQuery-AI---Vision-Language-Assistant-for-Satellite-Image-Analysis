@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Results · SatQuery AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛰️</text></svg>" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="app-sidebar">
+    <div class="sq-logo">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7 9 3 5 7l4 4"/><path d="M17 11l4 4-4 4-4-4"/><path d="m8 12 4 4 6-6-4-4Z"/></svg>
+      </span>
+      <span>SatQuery AI<span class="sub">Remote-Sensing AI</span></span>
+    </div>
+    <nav class="side-nav">
+      <a href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+        Dashboard
+      </a>
+      <a href="analysis.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        New Analysis
+      </a>
+      <a href="#" id="nav-datasets-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>
+        Explore Datasets
+      </a>
+      <a href="#" id="nav-history-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Recent Analyses
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar" data-user-avatar>DU</div>
+        <div>
+          <div class="name" data-user-name>Demo User</div>
+          <div class="role">Analyst</div>
+        </div>
+      </div>
+      <a href="#" class="btn-sq-ghost w-100 mt-1 d-flex align-items-center gap-2" data-logout style="font-size:0.82rem;">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log out
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="app-main">
+    <header class="app-topbar">
+      <div>
+        <h1>Analysis Results</h1>
+        <div class="crumb" id="crumb-id">satquery-ai / results</div>
+      </div>
+      <div class="d-flex gap-2">
+        <a href="analysis.html" class="btn-sq-secondary">New Analysis</a>
+        <button class="btn-sq-primary" id="download-report-btn">Download Report</button>
+      </div>
+    </header>
+
+    <main class="app-content wide" id="results-root">
+
+      <!-- Loading state -->
+      <div id="loading-state">
+        <div class="skel mb-3" style="height:110px;"></div>
+        <div class="skel mb-3" style="height:90px;"></div>
+        <div class="skel" style="height:260px;"></div>
+      </div>
+
+      <!-- Error state -->
+      <div id="error-state" class="d-none">
+        <div class="state-panel sq-panel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          <h3>Analysis could not be loaded</h3>
+          <p>Please verify the uploaded imagery and try again, or start a new analysis.</p>
+          <a href="analysis.html" class="btn-sq-primary d-inline-block mt-3">Start New Analysis</a>
+        </div>
+      </div>
+
+      <!-- Loaded content -->
+      <div id="content" class="d-none">
+
+        <!-- A. Analysis summary -->
+        <div class="sq-panel mb-3">
+          <div class="sq-panel-header">
+            <h2>Analysis Summary</h2>
+            <span class="badge-sq badge-teal" id="task-badge">—</span>
+          </div>
+          <div class="sq-panel-body" id="summary-body"></div>
+        </div>
+
+        <!-- AI Answer -->
+        <div class="answer-panel mb-3">
+          <span class="field-label">Answer</span>
+          <p class="answer-text" id="answer-text">—</p>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <!-- Key findings -->
+          <div class="col-lg-7">
+            <div class="sq-panel h-100">
+              <div class="sq-panel-header"><h2>Key Findings</h2></div>
+              <div class="sq-panel-body" id="findings-body"></div>
+            </div>
+          </div>
+          <!-- Confidence -->
+          <div class="col-lg-5">
+            <div class="sq-panel h-100">
+              <div class="sq-panel-header"><h2>Analysis Confidence</h2></div>
+              <div class="sq-panel-body">
+                <div class="d-flex align-items-baseline justify-content-between mb-2">
+                  <span class="data-value" style="font-size:2rem; font-weight:700;" id="confidence-value">—</span>
+                  <span class="field-label mb-0" id="confidence-note">model self-reported</span>
+                </div>
+                <div class="confidence-bar-track">
+                  <div class="confidence-bar-fill" id="confidence-fill" style="width:0%;"></div>
+                </div>
+                <p style="font-size:0.78rem; color:var(--ink-400);" class="mt-2 mb-0">
+                  Confidence is produced by the backend model and reflects certainty in the answer above, not a general accuracy guarantee.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Land-cover breakdown -->
+        <div class="sq-panel mb-3" id="landcover-panel">
+          <div class="sq-panel-header">
+            <h2>Land-Cover Breakdown</h2>
+            <span class="crumb mono">classified pixel coverage</span>
+          </div>
+          <div class="sq-panel-body">
+            <div class="lc-legend" id="lc-legend"></div>
+            <div class="lc-chart-wrap">
+              <canvas id="landcover-chart" height="220"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual evidence -->
+        <div class="sq-panel mb-3">
+          <div class="sq-panel-header"><h2>Visual Evidence</h2></div>
+          <div class="sq-panel-body" id="evidence-body"></div>
+        </div>
+
+        <!-- Map -->
+        <div class="sq-panel mb-3">
+          <div class="sq-panel-header">
+            <h2>Map View</h2>
+            <span class="crumb mono" id="map-coords">—</span>
+          </div>
+          <div class="sq-panel-body">
+            <div id="results-map" class="map-frame"></div>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="sq-panel mb-3">
+          <div class="sq-panel-header">
+            <h2>Alerts</h2>
+            <span class="badge-sq badge-slate" id="alerts-count">0</span>
+          </div>
+          <div class="sq-panel-body" id="alerts-body"></div>
+        </div>
+
+        <!-- Execution summary (collapsible) -->
+        <div class="sq-panel mb-4">
+          <div class="sq-panel-header" role="button" id="exec-toggle" style="cursor:pointer;">
+            <h2>Execution Summary</h2>
+            <span class="btn-sq-ghost" id="exec-toggle-label">Show details ▾</span>
+          </div>
+          <div class="sq-panel-body d-none" id="exec-summary-body"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/map.js"></script>
+<script src="js/report.js"></script>
+<script src="js/results.js"></script>
+</body>
+</html>

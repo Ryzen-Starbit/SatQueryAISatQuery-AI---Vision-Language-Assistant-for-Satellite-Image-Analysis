@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign in · SatQuery AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛰️</text></svg>" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="login-shell">
+
+  <!-- Left: technical / mission-control visual -->
+  <div class="login-visual sq-grid-bg">
+    <div class="sq-logo">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7 9 3 5 7l4 4"/><path d="M17 11l4 4-4 4-4-4"/><path d="m8 12 4 4 6-6-4-4Z"/><path d="m16 8 3-3"/><path d="M9 21a6 6 0 0 0-6-6"/></svg>
+      </span>
+      <span>SatQuery AI<span class="sub">Remote-Sensing Vision-Language Assistant</span></span>
+    </div>
+
+    <div>
+      <h1>Ask your satellite imagery a question — get an evidence-grounded answer.</h1>
+      <p class="lede">
+        SatQuery AI reads optical, SAR, and bi-temporal imagery and answers natural-language
+        queries with visual evidence, confidence scores, and an auditable execution trace.
+      </p>
+
+      <div class="scan-frame mt-4">
+        <span class="field-label">Sample query</span>
+        <p class="readout mb-2">"Has the built-up area increased between these two dates?"</p>
+        <div class="d-flex gap-3 mt-3">
+          <div>
+            <span class="field-label">Task</span>
+            <span class="readout">change_vqa</span>
+          </div>
+          <div>
+            <span class="field-label">Confidence</span>
+            <span class="readout">0.87</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between" style="color:var(--navy-600); font-size:0.75rem; font-family:var(--font-mono);">
+      <span>SMART INDIA HACKATHON · PROTOTYPE BUILD</span>
+      <span>v0.1.0-demo</span>
+    </div>
+  </div>
+
+  <!-- Right: login form -->
+  <div class="login-panel">
+    <div class="login-form-wrap">
+      <div class="d-md-none mb-4">
+        <div class="sq-logo dark">
+          <span class="mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7 9 3 5 7l4 4"/><path d="M17 11l4 4-4 4-4-4"/><path d="m8 12 4 4 6-6-4-4Z"/></svg>
+          </span>
+          <span>SatQuery AI</span>
+        </div>
+      </div>
+
+      <h2 class="mb-1">Sign in</h2>
+      <p style="color:var(--ink-600); font-size:0.9rem;" class="mb-4">
+        Interactive Vision-Language Assistant for Remote Sensing
+      </p>
+
+      <form id="login-form" novalidate>
+        <div class="mb-3">
+          <label class="field-label" for="email">Email or username</label>
+          <input type="text" id="email" class="sq-input" placeholder="you@organisation.gov.in" autocomplete="username" />
+          <div class="form-error-text" id="email-error">Please enter your email or username.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="field-label" for="password">Password</label>
+          <input type="password" id="password" class="sq-input" placeholder="••••••••" autocomplete="current-password" />
+          <div class="form-error-text" id="password-error">Please enter your password.</div>
+        </div>
+
+        <div class="form-error-text mb-3" id="form-error">Something went wrong. Please try again.</div>
+
+        <button type="submit" class="btn-sq-primary w-100" id="login-btn">
+          <span id="login-btn-text">Sign in</span>
+        </button>
+
+        <button type="button" class="btn-sq-secondary w-100 mt-2" id="google-login-btn">
+          Continue with Google
+        </button>
+
+        <div class="d-flex align-items-center gap-2 my-3">
+          <div style="flex:1; height:1px; background:var(--slate-200);"></div>
+          <span style="font-size:0.75rem; color:var(--ink-400);">or</span>
+          <div style="flex:1; height:1px; background:var(--slate-200);"></div>
+        </div>
+
+        <button type="button" class="btn-sq-secondary w-100" id="demo-login-btn">
+          Continue as Demo User
+        </button>
+      </form>
+
+      <p class="mt-4" style="font-size:0.78rem; color:var(--ink-400);">
+        Sign in with an account configured in Firebase Authentication, or use the demo shortcut
+        to explore the prototype without an account.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script type="module" src="js/firebase.js"></script>
+<script type="module" src="js/auth.js"></script>
+</body>
+</html>

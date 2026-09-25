@@ -1,0 +1,21 @@
+{
+  "firestore": {
+    "database": "satquery",
+    "rules": "firestore.rules"
+  },
+  "auth": {
+    "authorizedDomains": [
+      "localhost",
+      "127.0.0.1",
+      "satquery-ai-7f3a3.firebaseapp.com",
+      "satquery-ai-7f3a3.web.app"
+    ],
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "SatQuery AI",
+        "supportEmail": "arshsingh2708@gmail.com"
+      }
+    }
+  }
+}

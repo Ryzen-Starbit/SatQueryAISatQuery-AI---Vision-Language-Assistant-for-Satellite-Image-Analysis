@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · SatQuery AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛰️</text></svg>" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="app-sidebar">
+    <div class="sq-logo">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7 9 3 5 7l4 4"/><path d="M17 11l4 4-4 4-4-4"/><path d="m8 12 4 4 6-6-4-4Z"/></svg>
+      </span>
+      <span>SatQuery AI<span class="sub">Remote-Sensing AI</span></span>
+    </div>
+
+    <nav class="side-nav">
+      <a href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+        Dashboard
+      </a>
+      <a href="analysis.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        New Analysis
+      </a>
+      <a href="#" id="nav-datasets-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>
+        Explore Datasets
+      </a>
+      <a href="#" id="nav-history-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Recent Analyses
+      </a>
+
+      <div class="side-nav-section-label">System</div>
+      <a href="#" id="nav-settings-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 0 1-4 0v-.09a1.7 1.7 0 0 0-1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 0 1 0-4h.09a1.7 1.7 0 0 0 1.55-1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 0 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 0 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1Z"/></svg>
+        Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar" data-user-avatar>DU</div>
+        <div>
+          <div class="name" data-user-name>Demo User</div>
+          <div class="role">Analyst</div>
+        </div>
+      </div>
+      <a href="#" class="btn-sq-ghost w-100 mt-1 d-flex align-items-center gap-2" data-logout style="font-size:0.82rem;">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log out
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="app-main">
+    <header class="app-topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <div class="crumb">satquery-ai / dashboard</div>
+      </div>
+      <a href="analysis.html" class="btn-sq-primary">+ New Analysis</a>
+    </header>
+
+    <main class="app-content">
+
+      <!-- Hero -->
+      <section class="hero-panel mb-4">
+        <div class="hero-inner">
+          <span class="field-label" style="color:var(--teal-500);">Remote Sensing Analysis</span>
+          <h2 class="mt-2">Ask a question. Get an evidence-grounded answer.</h2>
+          <p>
+            Analyze optical, SAR, and bi-temporal satellite imagery using natural-language queries.
+            SatQuery AI's agentic backend selects the right specialist model for your question and
+            returns visual evidence, confidence, and an auditable execution trace.
+          </p>
+        </div>
+      </section>
+
+      <!-- Stat strip -->
+      <div class="stat-strip mb-4">
+        <div class="stat-cell">
+          <span class="field-label">Analyses run</span>
+          <div class="value" id="stat-analyses">12</div>
+        </div>
+        <div class="stat-cell">
+          <span class="field-label">Datasets available</span>
+          <div class="value" id="stat-datasets">5</div>
+        </div>
+        <div class="stat-cell">
+          <span class="field-label">Alerts flagged</span>
+          <div class="value" id="stat-alerts">3</div>
+        </div>
+        <div class="stat-cell">
+          <span class="field-label">Avg. confidence</span>
+          <div class="value" id="stat-confidence">—</div>
+        </div>
+      </div>
+
+      <!-- Two entry paths -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-6">
+          <a href="analysis.html?source=upload" class="text-decoration-none">
+            <div class="choice-card">
+              <div class="icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+              </div>
+              <h3>Analyze My Images</h3>
+              <p>Upload your own GeoTIFF / TIFF imagery — single scene, bi-temporal pair, or co-registered optical + SAR — and query it directly.</p>
+              <span class="btn-sq-secondary d-inline-block mt-2">Upload imagery →</span>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6">
+          <a href="analysis.html?source=dataset" class="text-decoration-none">
+            <div class="choice-card">
+              <div class="icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>
+              </div>
+              <h3>Explore Our Dataset</h3>
+              <p>No imagery on hand? Try SatQuery AI on curated example scenes covering urban change, floods, coastlines and cropland.</p>
+              <span class="btn-sq-secondary d-inline-block mt-2">Browse datasets →</span>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Recent analyses -->
+      <div class="sq-panel">
+        <div class="sq-panel-header">
+          <h2>Recent Analyses</h2>
+          <span class="badge-sq badge-slate">Local demo history</span>
+        </div>
+        <div id="recent-list"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script>
+  SatQuerySession.requireAuth();
+
+  // Populate the stat strip with real numbers from the backend.
+  SatQueryAPI.getStats()
+    .then((stats) => {
+      document.getElementById("stat-analyses").textContent = stats.analyses_run;
+      document.getElementById("stat-datasets").textContent = stats.datasets_available;
+      document.getElementById("stat-alerts").textContent = stats.alerts_flagged;
+      document.getElementById("stat-confidence").textContent = Math.round(stats.avg_confidence * 100) + "%";
+    })
+    .catch(() => {
+      // Backend not reachable — leave the placeholders rather than fail the whole page.
+      document.getElementById("stat-confidence").textContent = "—";
+    });
+
+  // Sidebar links that don't yet have dedicated pages route back into the
+  // relevant step of the analysis wizard, or show a "coming soon" toast.
+  document.getElementById("nav-datasets-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    window.location.href = "analysis.html?source=dataset";
+  });
+  document.getElementById("nav-settings-link").addEventListener("click", (e) => {
+    e.preventDefault();
+    SatQueryToast.show("Settings is not part of this prototype yet.", "error");
+  });
+
+  // Recent analyses: demo list (would normally come from a
+  // GET /analyses history endpoint).
+  const RECENT = [
+    { q: "Has the built-up area increased between these two dates?", type: "Bi-Temporal · Pune, Maharashtra", thumb: "assets/images/demo-change-map.jpg", when: "2 hours ago" },
+    { q: "Identify built-up and water-covered regions using both images.", type: "Optical + SAR · Ahmedabad, Gujarat", thumb: "assets/images/demo-optical.jpg", when: "Yesterday" },
+    { q: "Describe the land-cover and major objects visible in this image.", type: "Single Image · Nagpur District", thumb: "assets/images/demo-single.jpg", when: "3 days ago" },
+  ];
+  const list = document.getElementById("recent-list");
+  document.getElementById("nav-history-link").addEventListener("click", (e) => e.preventDefault());
+  RECENT.forEach((r) => {
+    const row = document.createElement("div");
+    row.className = "recent-row";
+    row.innerHTML = `
+      <img class="thumb" src="${r.thumb}" alt="">
+      <div class="meta">
+        <div class="q">${r.q}</div>
+        <div class="sub">${r.type}</div>
+      </div>
+      <span class="badge-sq badge-slate">${r.when}</span>
+    `;
+    list.appendChild(row);
+  });
+</script>
+</body>
+</html>

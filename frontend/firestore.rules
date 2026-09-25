@@ -1,0 +1,73 @@
+rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: users
+// Document ID: Firebase Authentication uid
+// Fields:
+//   - uid: string, required, immutable, equal to the document ID
+//   - name: string, required, 1-100 characters
+//   - email: string, required, valid email, immutable
+//   - photoURL: string or null, optional, HTTPS URL when present
+//   - createdAt: timestamp, required, immutable
+//   - updatedAt: timestamp, required
+//
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function uidUnchanged() {
+      return request.resource.data.uid == request.auth.uid;
+    }
+
+    function uidNotModified() {
+      return request.resource.data.uid == resource.data.uid;
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasOnly([
+          'uid', 'name', 'email', 'photoURL', 'createdAt', 'updatedAt'
+        ]) &&
+        data.uid is string &&
+        data.uid.size() > 0 &&
+        data.name is string &&
+        data.name.size() >= 1 &&
+        data.name.size() <= 100 &&
+        data.email is string &&
+        data.email.size() <= 320 &&
+        data.email.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$') &&
+        (data.photoURL == null ||
+          (data.photoURL is string &&
+            data.photoURL.size() <= 2048 &&
+            data.photoURL.matches('^https://.*'))) &&
+        data.createdAt is timestamp &&
+        data.updatedAt is timestamp;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) &&
+        uidUnchanged() &&
+        isValidUser(request.resource.data) &&
+        request.resource.data.createdAt == request.time &&
+        request.resource.data.updatedAt == request.time;
+      allow update: if isOwner(userId) &&
+        uidNotModified() &&
+        isValidUser(request.resource.data) &&
+        request.resource.data.createdAt == resource.data.createdAt &&
+        request.resource.data.email == resource.data.email &&
+        request.resource.data.updatedAt == request.time;
+      allow delete: if isOwner(userId);
+    }
+  }
+}

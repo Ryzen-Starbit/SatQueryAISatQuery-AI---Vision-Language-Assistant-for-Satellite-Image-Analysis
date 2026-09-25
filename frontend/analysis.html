@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>New Analysis · SatQuery AI</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛰️</text></svg>" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="app-sidebar">
+    <div class="sq-logo">
+      <span class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7 9 3 5 7l4 4"/><path d="M17 11l4 4-4 4-4-4"/><path d="m8 12 4 4 6-6-4-4Z"/></svg>
+      </span>
+      <span>SatQuery AI<span class="sub">Remote-Sensing AI</span></span>
+    </div>
+    <nav class="side-nav">
+      <a href="dashboard.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+        Dashboard
+      </a>
+      <a href="analysis.html" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        New Analysis
+      </a>
+      <a href="#" id="nav-datasets-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg>
+        Explore Datasets
+      </a>
+      <a href="#" id="nav-history-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Recent Analyses
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar" data-user-avatar>DU</div>
+        <div>
+          <div class="name" data-user-name>Demo User</div>
+          <div class="role">Analyst</div>
+        </div>
+      </div>
+      <a href="#" class="btn-sq-ghost w-100 mt-1 d-flex align-items-center gap-2" data-logout style="font-size:0.82rem;">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        Log out
+      </a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="app-main">
+    <header class="app-topbar">
+      <div>
+        <h1>New Analysis</h1>
+        <div class="crumb">satquery-ai / analysis</div>
+      </div>
+      <a href="dashboard.html" class="btn-sq-ghost">Cancel</a>
+    </header>
+
+    <main class="app-content" id="wizard-view">
+
+      <div class="wizard-steps" id="wizard-steps">
+        <div class="wizard-step" data-step="source"><span class="dot">1</span><span>Data Source</span></div>
+        <div class="wizard-sep"></div>
+        <div class="wizard-step" data-step="configure"><span class="dot">2</span><span>Configure</span></div>
+        <div class="wizard-sep"></div>
+        <div class="wizard-step" data-step="location"><span class="dot">3</span><span>Location &amp; Time</span></div>
+        <div class="wizard-sep"></div>
+        <div class="wizard-step" data-step="query"><span class="dot">4</span><span>Query</span></div>
+      </div>
+
+      <!-- ============ STEP 1: DATA SOURCE ============ -->
+      <section class="wizard-panel" data-panel="source">
+        <div class="sq-panel">
+          <div class="sq-panel-header"><h2>Choose a data source</h2></div>
+          <div class="sq-panel-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="mode-card" data-source="upload">
+                  <span class="tag">Your imagery</span>
+                  <h4 class="mt-2">Analyze My Images</h4>
+                  <p>Upload GeoTIFF / TIFF imagery from your own device.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mode-card" data-source="dataset">
+                  <span class="tag">Curated examples</span>
+                  <h4 class="mt-2">Explore Our Dataset</h4>
+                  <p>Use a predefined example scene to try SatQuery AI.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+          <button class="btn-sq-primary" id="to-configure-btn" disabled>Continue →</button>
+        </div>
+      </section>
+
+      <!-- ============ STEP 2: CONFIGURE ============ -->
+      <section class="wizard-panel" data-panel="configure">
+
+        <!-- Analysis mode -->
+        <div class="sq-panel mb-3">
+          <div class="sq-panel-header"><h2>Analysis mode</h2></div>
+          <div class="sq-panel-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="mode-card" data-mode="single">
+                  <span class="tag">Single image</span>
+                  <h4 class="mt-2">Optical or SAR</h4>
+                  <p>Analyze one scene — land-cover, objects, grounding.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mode-card" data-mode="bitemporal">
+                  <span class="tag">Two dates</span>
+                  <h4 class="mt-2">Bi-Temporal Pair</h4>
+                  <p>Compare two acquisitions to understand change.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="mode-card" data-mode="opt_sar">
+                  <span class="tag">Cross-modal</span>
+                  <h4 class="mt-2">Optical + SAR Pair</h4>
+                  <p>Co-registered optical and SAR images, analyzed together.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image-type selector, shown only for "single" mode -->
+        <div class="sq-panel mb-3 d-none" id="image-type-panel">
+          <div class="sq-panel-header"><h2>Image type</h2></div>
+          <div class="sq-panel-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="mode-card" data-imgtype="optical">
+                  <h4>Optical / Multispectral</h4>
+                  <p>Standard optical or multispectral scene.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mode-card" data-imgtype="sar">
+                  <h4>SAR</h4>
+                  <p>Synthetic Aperture Radar scene.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPLOAD workflow: dynamic slots -->
+        <div class="sq-panel mb-3 d-none" id="upload-panel">
+          <div class="sq-panel-header"><h2>Upload imagery</h2><span class="badge-sq badge-slate">GeoTIFF / TIFF</span></div>
+          <div class="sq-panel-body">
+            <div id="upload-slots" class="row g-3"></div>
+          </div>
+        </div>
+
+        <!-- DATASET workflow -->
+        <div class="sq-panel mb-3 d-none" id="dataset-panel">
+          <div class="sq-panel-header"><h2>Select a dataset</h2><span class="badge-sq badge-slate" id="dataset-filter-badge">All types</span></div>
+          <div class="sq-panel-body">
+            <div class="row g-3" id="dataset-grid">
+              <div class="col-12 text-center text-muted py-4">Loading datasets…</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-error-text mb-2" id="configure-error">Please complete the required imagery for this analysis mode.</div>
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn-sq-secondary" data-back="source">← Back</button>
+          <button class="btn-sq-primary" id="to-location-btn">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ============ STEP 3: LOCATION + TIMESTAMP ============ -->
+      <section class="wizard-panel" data-panel="location">
+        <div class="row g-3">
+          <div class="col-lg-6">
+            <div class="sq-panel mb-3">
+              <div class="sq-panel-header"><h2>Location</h2></div>
+              <div class="sq-panel-body">
+                <label class="field-label" for="location-search">Search location</label>
+                <div class="input-group mb-2">
+                  <input type="text" id="location-search" class="sq-input" placeholder="e.g. Pune, Maharashtra" />
+                  <button class="btn-sq-secondary" id="location-search-btn" type="button">Search</button>
+                </div>
+                <div class="row g-2 mb-2">
+                  <div class="col-6">
+                    <label class="field-label" for="lat-input">Latitude</label>
+                    <input type="text" id="lat-input" class="sq-input" placeholder="18.5204" />
+                  </div>
+                  <div class="col-6">
+                    <label class="field-label" for="lon-input">Longitude</label>
+                    <input type="text" id="lon-input" class="sq-input" placeholder="73.8567" />
+                  </div>
+                </div>
+                <p style="font-size:0.78rem; color:var(--ink-400);" class="mb-2">Or click the map to set a point precisely.</p>
+                <div id="picker-map" class="map-frame"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="sq-panel mb-3" id="timestamp-panel">
+              <div class="sq-panel-header"><h2>Acquisition date</h2></div>
+              <div class="sq-panel-body" id="timestamp-body">
+                <!-- populated dynamically depending on mode -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-error-text mb-2" id="location-error">Please provide a location and acquisition date.</div>
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn-sq-secondary" data-back="configure">← Back</button>
+          <button class="btn-sq-primary" id="to-query-btn">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ============ STEP 4: QUERY ============ -->
+      <section class="wizard-panel" data-panel="query">
+        <div class="sq-panel mb-3">
+          <div class="sq-panel-header"><h2>What would you like to know?</h2></div>
+          <div class="sq-panel-body query-box">
+            <textarea id="query-input" placeholder="Ask a question about the satellite imagery..."></textarea>
+            <div class="form-error-text mt-1" id="query-error">Please enter a question about the imagery.</div>
+            <div class="mt-3">
+              <span class="field-label">Example queries</span>
+              <div id="example-chips"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review summary -->
+        <div class="sq-panel mb-3">
+          <div class="sq-panel-header"><h2>Review</h2></div>
+          <div class="sq-panel-body" id="review-summary"></div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn-sq-secondary" data-back="location">← Back</button>
+          <button class="btn-sq-primary" id="analyze-btn">Analyze Imagery</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============ PROCESSING SCREEN ============ -->
+    <main class="app-content d-none" id="processing-view">
+      <div class="exec-shell sq-panel">
+        <div class="sq-panel-header">
+          <h2>Running analysis</h2>
+          <span class="badge-sq badge-teal" id="processing-task-badge">Agentic pipeline</span>
+        </div>
+        <div class="sq-panel-body" id="exec-steps"></div>
+      </div>
+      <p class="text-center mt-3" style="font-size:0.8rem; color:var(--ink-400);">
+        This trace shows the agent's observable steps only — no internal reasoning is displayed.
+      </p>
+    </main>
+
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+<script src="js/map.js"></script>
+<script src="js/analysis.js"></script>
+</body>
+</html>
