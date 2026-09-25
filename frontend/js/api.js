@@ -1,7 +1,7 @@
 const SatQueryAPI = (function () {
   "use strict";
   const DEMO_MODE = false;
-  const BASE_URL = "http://localhost:8000";
+  const BASE_URL = "https://satqueryaisatquery-ai-vision-language.onrender.com";
   function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
